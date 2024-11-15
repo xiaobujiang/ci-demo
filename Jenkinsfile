@@ -103,7 +103,7 @@ spec:
                             docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
 
                             echo "构建镜像"
-                            docker buildx build --platform=linux/amd64  -t ${IMAGE}/${APP}:${BUILD_ID}-${TIMESTAMP}  . --push
+                            docker buildx build --platform=linux/amd64,linux/arm64  -t ${IMAGE}/${APP}:${BUILD_ID}-${TIMESTAMP}  . --push
 
                             """
                         }
