@@ -14,7 +14,7 @@ WORKDIR /opt
 COPY . .
 
 # 编译成可执行二进制文件
-RUN go build -o app hello.go
+RUN go build -o app .
 
 FROM docker.cloudimages.asia/alpine:latest as serviceDeploy
 
