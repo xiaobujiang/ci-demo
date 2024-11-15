@@ -92,10 +92,6 @@ spec:
                         passwordVariable: 'DOCKER_PASSWORD']]) {
                           script {
                             sh """
-                            cd ci-demo
-  
-                            echo "查看buildx"
-
                             echo "开启多架构编译"
                             docker buildx create --name mybuilder --use --driver docker-container --driver-opt image=docker.cloudimages.asia/moby/buildkit:buildx-stable-1
 
