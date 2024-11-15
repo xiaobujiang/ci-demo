@@ -16,7 +16,7 @@ COPY . .
 # 编译成可执行二进制文件
 RUN go build -o app .
 
-FROM egistry.cn-hangzhou.aliyuncs.com/s-ops/alpine:latest as serviceDeploy
+FROM registry.cn-hangzhou.aliyuncs.com/s-ops/alpine:latest as serviceDeploy
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &&   apk update &&   apk upgrade &&   apk add ca-certificates && update-ca-certificates &&   apk add --update tzdata &&   rm -rf /var/cache/apk/*
 
