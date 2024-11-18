@@ -20,7 +20,12 @@ spec:
   serviceAccount: jenkins      
   containers:
     - name: jnlp
-      image: docker.cloudimages.asia/jenkins/inbound-agent:latest        
+      image: docker.cloudimages.asia/jenkins/inbound-agent:latest 
+    - name: tools  
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/tools:latest
+      command:
+        - cat
+      tty: true         
     - name: docker
       image: docker.cloudimages.asia/docker:latest
       env:
@@ -72,11 +77,13 @@ spec:
     stages {
         stage('build image tag') {
             steps {
-                container('docker') {
+                container('tools') {
                     script {
                         env.TIMESTAMP = sh(script: "date +%Y%m%d%H%M-%S", returnStdout: true).trim()
+                        env.COMMITID = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                          sh """
                             echo TAG: ${BUILD_ID}-${TIMESTAMP}
+                            echo ID: ${COMMITID}
                           """
                     }         
                 }
@@ -93,7 +100,7 @@ spec:
                           script {
                             sh """
                             echo "开启多架构编译"
-                            docker buildx create --name mybuilder --use --driver docker-container --driver-opt image=docker.cloudimages.asia/moby/buildkit:buildx-stable-1
+                            docker buildx create --name mybuilder --use --driver docker-container --driver-opt image=registry.cn-hangzhou.aliyuncs.com/s-ops/buildkit:buildx-stable-1
 
                             echo "登陆仓库"
                             docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
