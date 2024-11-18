@@ -80,10 +80,8 @@ spec:
                 container('tools') {
                     script {
                         env.TIMESTAMP = sh(script: "date +%Y%m%d%H%M-%S", returnStdout: true).trim()
-                        env.COMMITID = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
                          sh """
                             echo TAG: ${BUILD_ID}-${TIMESTAMP}
-                            echo ID: ${COMMITID}
                           """
                     }         
                 }
