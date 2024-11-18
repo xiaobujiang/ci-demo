@@ -97,7 +97,6 @@ spec:
                         passwordVariable: 'DOCKER_PASSWORD']]) {
                           script {
                             sh """
-                            cd ci-demo
                             echo "开启多架构编译"
                             docker buildx create --name mybuilder --use --driver docker-container --driver-opt image=registry.cn-hangzhou.aliyuncs.com/s-ops/buildkit:buildx-stable-1
 
@@ -105,7 +104,7 @@ spec:
                             docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
 
                             echo "构建/推送镜像"
-                            docker buildx build --progress=plain --no-cache --platform=linux/amd64,linux/arm64 -t ${IMAGE}/${APP}:${BUILD_ID}-${TIMESTAMP} . --push
+                            docker buildx build --progress=plain --no-cache --platform=linux/amd64,linux/arm64 -f Dockerfile -t ${IMAGE}/${APP}:${BUILD_ID}-${TIMESTAMP} . --push
 
                             """
                         }
