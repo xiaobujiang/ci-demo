@@ -97,6 +97,8 @@ spec:
                         passwordVariable: 'DOCKER_PASSWORD']]) {
                           script {
                             sh """
+                            pwd 
+                            ls
                             echo "开启多架构编译"
                             docker buildx create --name mybuilder --use --driver docker-container --driver-opt image=registry.cn-hangzhou.aliyuncs.com/s-ops/buildkit:buildx-stable-1
 
