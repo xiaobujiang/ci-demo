@@ -3,7 +3,7 @@ appname: ci-demo
 service:
   port: 8080
 
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/ci-demo 
