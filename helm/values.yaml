@@ -3,17 +3,17 @@ appname: ci-demo
 service:
   port: 8080
 
-replicaCount: 4
+replicaCount: 1
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/ci-demo 
-  tag: 215-202411190849-01-ed1cd19
+  tag: 216-202411210758-55-b12b19f
   pullPolicy: IfNotPresent
 
 resources:
   limits:
     cpu: 50m
-    memory: 1028Mi
+    memory: 128Mi
   requests:
     cpu: 50m
     memory: 128Mi
