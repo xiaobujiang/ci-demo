@@ -1,6 +1,6 @@
 appname: ci-demo
 
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/ci-demo
