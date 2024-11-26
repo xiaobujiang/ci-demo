@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/ci-demo
-  tag: 220-202411260501-49-854a94b
+  tag: 221-202411260637-21-a2ab502
   pullPolicy: IfNotPresent
 
 #imagePullSecrets:
