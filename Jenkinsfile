@@ -17,8 +17,7 @@ properties([
                 script: [
                     classpath: [],
                     sandbox: false,
-                    script: '''
-def trim_git_url = GIT_URL           
+                    script: '''         
 def gettags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()  // 修正了这里的引号问题
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
