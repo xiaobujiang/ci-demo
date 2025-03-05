@@ -14,7 +14,10 @@ pipeline {
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
 
     }
-
+    parameters {
+        string(name: 'GIT_URL', defaultValue: 'git@github.com:yjiangi/ci-demo.git', description: 'Git 仓库地址')
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Git 分支')
+    }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
         buildDiscarder logRotator(artifactDaysToKeepStr: '15', artifactNumToKeepStr: '', daysToKeepStr: '15', numToKeepStr: '30')
