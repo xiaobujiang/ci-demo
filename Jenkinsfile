@@ -1,3 +1,6 @@
+def COMMITID = ""
+def TIMESTAMP = ""
+def GIT_URL = ${params.GIT_URL} 
 properties([
     parameters([
         reactiveChoice(
@@ -19,7 +22,7 @@ properties([
                     classpath: [],
                     sandbox: false,
                     script: '''
-def trim_git_url = ${params.GIT_URL}              
+def trim_git_url = GIT_URL           
 def gettags = "git ls-remote --heads ${trim_git_url}".execute()  // 修正了这里的引号问题
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
@@ -30,8 +33,7 @@ return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/'
 ])
 
 // 使用split函数以斜杠为分隔符拆分字符串，并提取最后一个元素
-def COMMITID = ""
-def TIMESTAMP = ""
+
 pipeline {
     agent {
         kubernetes {
