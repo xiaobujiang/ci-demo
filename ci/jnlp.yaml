@@ -12,14 +12,14 @@ spec:
   serviceAccount: jenkins      
   containers:
     - name: jnlp
-      image: docker.cloudimages.asia/jenkins/inbound-agent:latest 
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/inbound-agent:latest
     - name: tools  
       image: registry.cn-hangzhou.aliyuncs.com/s-ops/tools:latest
       command:
         - cat
       tty: true         
     - name: docker
-      image: docker.cloudimages.asia/docker:latest
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/docker:latest
       env:
         - name: DOCKER_CLI_EXPERIMENTAL
           value: "enabled"  
@@ -35,7 +35,7 @@ spec:
       - name: docker-socket
         mountPath: /var/run       
     - name: docker-daemon
-      image: docker.cloudimages.asia/docker:19.03.1-dind
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/docker:19.03.1-dind
       securityContext:
         privileged: true
       volumeMounts:
