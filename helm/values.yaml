@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/golang-demo
-  tag: 235-202503050731-24-51cf815
+  tag: 236-202503050737-53-f100862
   pullPolicy: IfNotPresent
 
 #imagePullSecrets:
