@@ -1,3 +1,36 @@
+properties([
+    parameters([
+        reactiveChoice(
+            choiceType: 'PT_SINGLE_SELECT',
+            description: '选择分支:',
+            filterLength: 0,
+            filterable: false,
+            name: 'BRANCH',
+            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}',
+            referencedParameters: 'GIT_URL',
+            script: groovyScript(
+                fallbackScript: [
+                    classpath: [],
+                    oldScript: '',
+                    sandbox: false,
+                    script: "return ['']"
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: false,
+                    script: '''
+                        def gitUrl = GIT_URL
+                        def branches = "git ls-remote --heads ${gitUrl}".execute().text.readLines()
+                        return branches.collect { 
+                            it.split()[1].replace("refs/heads/", "") 
+                        }
+                    '''
+                ]
+            )
+        )
+    ])
+])
+
 // 使用split函数以斜杠为分隔符拆分字符串，并提取最后一个元素
 def COMMITID = ""
 def TIMESTAMP = ""
@@ -15,9 +48,12 @@ pipeline {
 
     }
     parameters {
-        string(name: 'GIT_URL', defaultValue: 'git@github.com:yjiangi/ci-demo.git', description: 'Git 仓库地址')
-        string(name: 'BRANCH', description: 'Git 分支')
-    }
+        choice(
+            name: 'GIT_URL', 
+            choices: "git@github.com:yjiangi/ci-demo.git", 
+            description: '选择项目：'
+        )
+
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
         buildDiscarder logRotator(artifactDaysToKeepStr: '15', artifactNumToKeepStr: '', daysToKeepStr: '15', numToKeepStr: '30')
