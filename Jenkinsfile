@@ -26,6 +26,14 @@ pipeline {
 
 
     stages {
+       stage('pull code') {
+            steps {                          
+                echo '--------------------------拉取代码-----------------------'
+                checkout([$class: 'GitSCM', branches: [[name: "${BRANCH}"]], 
+                extensions: [], userRemoteConfigs: [[credentialsId: 'github-ci', 
+                url: "${GIT_URL}"]]])
+            }
+        }        
         stage('commit'){
             steps{
               script{
