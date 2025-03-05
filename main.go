@@ -12,7 +12,7 @@ func main() {
 
   r.GET("/", func(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H {
-      "msg": "Welcome to the Jenkins CI Demo!",
+      "msg": "Welcome to the Jenkins CI Demo-dev!",
     })
   })
 
