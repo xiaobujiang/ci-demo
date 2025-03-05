@@ -20,10 +20,8 @@ properties([
                     sandbox: false,
                     script: '''
                         def gitUrl = GIT_URL
-                        def branches = "git ls-remote --heads ${gitUrl}".execute().text.readLines()
-                        return branches.collect { 
-                            it.split()[1].replace("refs/heads/", "") 
-                        }
+                        def gettags = git ls-remote --heads ${gitUrl}".execute()
+                        return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
             )
