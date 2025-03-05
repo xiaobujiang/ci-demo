@@ -31,7 +31,6 @@ return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/'
 
 def COMMITID = ""
 def TIMESTAMP = ""
-def GIT_URL = ${params.GIT_URL} 
 pipeline {
     agent {
         kubernetes {
@@ -60,7 +59,6 @@ pipeline {
         //超时时间
         timeout(time:60, unit:'MINUTES')
     }
-
 
     stages {
        stage('pull code') {
