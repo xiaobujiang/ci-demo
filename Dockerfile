@@ -1,5 +1,5 @@
 # 指定基础的go编译镜像
-FROM docker.cloudimages.asia/golang:alpine3.17 as build
+FROM registry.cn-hangzhou.aliyuncs.com/s-ops/golang:alpine3.17 as build
 
 # 指定go的环境变量
 ENV GOPROXY=https://goproxy.cn \
@@ -16,7 +16,7 @@ COPY . .
 # 编译成可执行二进制文件
 RUN go build -o app main.go
 
-FROM docker.cloudimages.asia/alpine:latest as serviceDeploy
+FROM registry.cn-hangzhou.aliyuncs.com/s-ops/alpine:latest as serviceDeploy
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories &&   apk update &&   apk upgrade &&   apk add ca-certificates && update-ca-certificates &&   apk add --update tzdata &&   rm -rf /var/cache/apk/*
 
