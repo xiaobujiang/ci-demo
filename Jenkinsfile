@@ -53,7 +53,7 @@ pipeline {
             choices: "git@github.com:yjiangi/ci-demo.git", 
             description: '选择项目：'
         )
-
+    }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
         buildDiscarder logRotator(artifactDaysToKeepStr: '15', artifactNumToKeepStr: '', daysToKeepStr: '15', numToKeepStr: '30')
