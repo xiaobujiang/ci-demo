@@ -19,7 +19,7 @@ properties([
                     classpath: [],
                     sandbox: false,
                     script: '''
-def trim_git_url = ${GIT_URL}               
+def trim_git_url = ${params.GIT_URL}              
 def gettags = "git ls-remote --heads ${trim_git_url}".execute()  // 修正了这里的引号问题
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
@@ -49,7 +49,7 @@ pipeline {
         choice(
             name: 'GIT_URL', 
             choices: "git@github.com:yjiangi/ci-demo.git", 
-            description: '选择项目：'
+            description: '选择项目'
         )
     }
     options {
