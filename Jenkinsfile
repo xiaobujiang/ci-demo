@@ -1,6 +1,3 @@
-def COMMITID = ""
-def TIMESTAMP = ""
-def GIT_URL = ${params.GIT_URL} 
 properties([
     parameters([
         reactiveChoice(
@@ -32,8 +29,9 @@ return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/'
     ])
 ])
 
-// 使用split函数以斜杠为分隔符拆分字符串，并提取最后一个元素
-
+def COMMITID = ""
+def TIMESTAMP = ""
+def GIT_URL = ${params.GIT_URL} 
 pipeline {
     agent {
         kubernetes {
