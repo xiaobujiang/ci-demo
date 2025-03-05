@@ -7,7 +7,6 @@ properties([
             filterable: false,
             name: 'BRANCH',
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}',
-            referencedParameters: 'GIT_URL',
             script: groovyScript(
                 fallbackScript: [
                     classpath: [],
