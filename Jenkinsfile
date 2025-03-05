@@ -7,6 +7,7 @@ properties([
             filterable: false,
             name: 'BRANCH',
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}',
+            referencedParameters: 'GIT_URL',
             script: groovyScript(
                 fallbackScript: [
                     classpath: [],
@@ -18,7 +19,8 @@ properties([
                     classpath: [],
                     sandbox: false,
                     script: '''
-def gettags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()  // 修正了这里的引号问题
+def trim_git_url = ${GIT_URL}               
+def gettags = "git ls-remote --heads ${trim_git_url}".execute()  // 修正了这里的引号问题
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
