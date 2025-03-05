@@ -53,7 +53,7 @@ pipeline {
                             docker login ${DOCKER_REGISTRY} -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
 
                             echo "构建/推送镜像"
-                            docker buildx build --progress=plain --no-cache --platform=linux/amd64,linux/arm64 -f Dockerfile -t ${IMAGE}/${AppName}:${ImageTag} . --push
+                            docker buildx build --progress=plain --no-cache --platform=linux/amd64 -f Dockerfile -t ${IMAGE}/${AppName}:${ImageTag} . --push
 
                             """
                         }
