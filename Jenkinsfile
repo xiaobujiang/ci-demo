@@ -6,7 +6,7 @@ properties([
         string(
             name: 'APP',
             defaultValue: APP,
-            description: '应用名称'
+            description: '服务名称'
         ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
