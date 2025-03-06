@@ -2,7 +2,7 @@ properties([
     parameters([
         choice(
             choices: ['git@github.com:yjiangi/ci-demo.git'], 
-            description: '仓库', 
+            description: '选择服务', 
             name: 'GIT_URL'
         ),
         reactiveChoice(
@@ -25,11 +25,8 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script: '''
-                        def gitUrl = "${GIT_URL}"
-                        def getTags = "git ls-remote --heads ${gitUrl}".execute()
-                        return getTags.text.readLines()
-                            .collect { it.split()[1].replaceAll('refs/heads/', '') }
-                            .unique()
+                        def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
+                        return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
             )
