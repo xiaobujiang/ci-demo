@@ -34,7 +34,54 @@ pipeline {
     agent {
         kubernetes {
             label "jnlp-slave-${UUID.randomUUID().toString().substring(0, 8)}"
-            yamlFile "ci/jnlp.yaml"
+            yaml """
+ apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: jenkins-slave
+spec:
+  volumes:
+    - name: docker-socket
+      emptyDir: {}
+    - name: workspace-volume
+      emptyDir: {}      
+  serviceAccount: jenkins      
+  containers:
+    - name: jnlp
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/inbound-agent:latest
+    - name: tools  
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/tools:latest
+      command:
+        - cat
+      tty: true         
+    - name: docker
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/docker:latest
+      env:
+        - name: DOCKER_CLI_EXPERIMENTAL
+          value: "enabled"  
+      command:
+      - sleep
+      args:
+      - 99d
+      readinessProbe:
+        exec:
+          command: ["ls", "-S", "/var/run/docker.sock"]      
+        initialDelaySeconds: 10  
+      volumeMounts:
+      - name: docker-socket
+        mountPath: /var/run       
+    - name: docker-daemon
+      image: registry.cn-hangzhou.aliyuncs.com/s-ops/docker:19.03.1-dind
+      securityContext:
+        privileged: true
+      volumeMounts:
+      - name: docker-socket
+        mountPath: /var/run
+      - name: workspace-volume
+        mountPath: /home/jenkins/agent
+        readOnly: false            
+            """
         }
     }
     environment {
