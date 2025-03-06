@@ -1,3 +1,6 @@
+def APP =  env.JOB_NAME.split('/').last().toLowerCase()
+def COMMITID = ""
+def TIMESTAMP = ""
 properties([
     parameters([
         choice(
@@ -33,9 +36,6 @@ return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/'
         )
     ])
 ])
-
-def COMMITID = ""
-def TIMESTAMP = ""
 pipeline {
     agent {
         kubernetes {
@@ -73,6 +73,12 @@ pipeline {
                   TIMESTAMP = sh(script: "date +%Y%m%d%H%M-%S", returnStdout: true).trim()
                   env.ImageTag = "${BUILD_ID}-${TIMESTAMP}-${COMMITID}"
                   env.AppName =  env.JOB_NAME.split('/').last().toLowerCase()
+                  sh """
+                  echo "分支id: ${COMMITID}"
+                  echo "构建时间: ${TIMESTAMP}"
+                  echo "镜像TAG: ${ImageTag}"
+                  echo "服务名字: ${AppName}"
+                  echo "服务名称: ${APP}"
                 }   
             }
         }
