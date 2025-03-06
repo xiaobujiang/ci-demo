@@ -28,8 +28,7 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script:                     
-''' def app = params.APP 
-def giturl = "https://github.com/yjiangi/${app}.git"                
+'''def giturl = "https://github.com/yjiangi/"+ APP + ".git"                
 def getTags = ("git ls-remote --heads ${giturl}").execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
 '''
