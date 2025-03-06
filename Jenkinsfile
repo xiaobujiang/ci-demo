@@ -20,7 +20,7 @@ properties([
                     sandbox: false,
                     script: ''' 
 def gitUrl = params.GIT_URL                    
-def gettags = "git ls-remote --heads ".execute()
+def gettags = "git ls-remote --heads ${gitUrl}".execute()
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
