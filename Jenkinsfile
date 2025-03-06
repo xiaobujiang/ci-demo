@@ -28,7 +28,7 @@ properties([
                     script: '''
                         // 获取 GIT_URL 参数
                         def giturl = params.GIT_URL  
-                        
+                        println "GIT_URL: ${giturl}" 
                         // 执行 git 命令获取分支列表
                         def getTags = "git ls-remote --heads ${giturl}".execute()
 
