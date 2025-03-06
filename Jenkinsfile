@@ -3,11 +3,6 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
-        choice(
-            choices: ['git@github.com:yjiangi/ci-demo.git'], 
-            description: '选择服务', 
-            name: 'GIT_URL'
-        ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
@@ -15,7 +10,6 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'GIT_URL', 
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -47,6 +41,7 @@ pipeline {
         DOCKER_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_NAMEPSACE = "gitops-demo"
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
+        GIT_URL = "git@github.com:yjiangi/${APP}.git"
     }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
