@@ -47,7 +47,7 @@ pipeline {
     }
     parameters {
         choice(
-            name: 'GIT_URL', 
+            name: "GIT_URL", 
             choices: "git@github.com:yjiangi/ci-demo.git", 
             description: '选择项目'
         )
