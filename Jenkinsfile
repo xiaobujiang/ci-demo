@@ -15,16 +15,15 @@ properties([
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: false, 
+                    sandbox: true, 
                     script: 'return [""]'
                 ], 
                 script: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: false, 
-                    script: ''' 
-GIT_URL = "git@github.com:yjiangi/" + APP + ".git"                  
-def getTags = "git ls-remote --heads ${GIT_URL}".execute()
+                    sandbox: true, 
+                    script: '''                  
+def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
