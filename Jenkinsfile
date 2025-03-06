@@ -10,7 +10,7 @@ properties([
         ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
-            description: '选择分支1', 
+            description: '选择分支2', 
             filterLength: 0, 
             filterable: false, 
             name: 'BRANCH', 
@@ -28,7 +28,7 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script:                     
-'''def giturl = "https://github.com/yjiangi/"+ APP + ".git"                
+'''def giturl = "https://github.com/yjiangi/ci-demo.git"                
 def getTags = ("git ls-remote --heads ${giturl}").execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
 '''
