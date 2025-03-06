@@ -2,7 +2,7 @@ properties([
     parameters([
         choice(
             choices: ['git@github.com:yjiangi/ci-demo.git','git@github.com:yjiangi/nginx-vts.git'], 
-            description: '选择', 
+            description: '选择fff', 
             name: 'GIT_URL'
         ),
         [
@@ -30,7 +30,7 @@ properties([
                         def giturl = params.GIT_URL  
                         println "GIT_URL: ${giturl}" 
                         // 执行 git 命令获取分支列表
-                        def getTags = "git ls-remote --heads ${giturl}".execute()
+                        def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
 
                         // 返回分支名
                         return getTags.text.readLines()
