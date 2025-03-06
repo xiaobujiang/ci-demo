@@ -1,34 +1,42 @@
 properties([
     parameters([
+        choice(
+            choices: ['git@github.com:yjiangi/ci-demo.git'], 
+            description: '仓库', 
+            name: 'GIT_URL'
+        ),
         reactiveChoice(
-            choiceType: 'PT_SINGLE_SELECT',
-            description: '选择分支:',
-            filterLength: 0,
-            filterable: false,
-            name: 'BRANCH',
-            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}',
+            choiceType: 'PT_SINGLE_SELECT', 
+            description: '选择分支', 
+            filterLength: 0, 
+            filterable: false, 
+            name: 'BRANCH', 
+            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
             referencedParameters: 'GIT_URL', 
             script: groovyScript(
                 fallbackScript: [
-                    classpath: [],
-                    oldScript: '',
-                    sandbox: false,
-                    script: 
-                    'return [\'\']'
-                ],
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: false, 
+                    script: 'return [""]'
+                ], 
                 script: [
-                    classpath: [],
-                    sandbox: false,
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: false, 
                     script: '''
-giturl = ${GIT_URL}                    
-def gettags = "git ls-remote --heads ${giturl}".execute()
-return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()                    
+                        def gitUrl = "${GIT_URL}"
+                        def getTags = "git ls-remote --heads ${gitUrl}".execute()
+                        return getTags.text.readLines()
+                            .collect { it.split()[1].replaceAll('refs/heads/', '') }
+                            .unique()
                     '''
                 ]
             )
         )
     ])
 ])
+
 
 def COMMITID = ""
 def TIMESTAMP = ""
@@ -44,13 +52,6 @@ pipeline {
         REGISTRY_NAMEPSACE = "gitops-demo"
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
 
-    }
-    parameters {
-        choice(
-            name: "GIT_URL", 
-            choices: "git@github.com:yjiangi/ci-demo.git", 
-            description: '选择项目'
-        )
     }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
