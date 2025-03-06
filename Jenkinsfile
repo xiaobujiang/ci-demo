@@ -19,12 +19,11 @@ properties([
                 script: [
                     classpath: [],
                     sandbox: false,
-                    script: 
-                    """
+                    script: '''
 def giturl = ${GIT_URL}                    
 def gettags = "git ls-remote --heads ${giturl}".execute()
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()                    
-                    """
+                    '''
                 ]
             )
         )
