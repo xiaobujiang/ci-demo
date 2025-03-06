@@ -19,9 +19,10 @@ properties([
                     classpath: [],
                     sandbox: false,
                     script: ''' 
-def gitUrl = params.GIT_URL                    
-def gettags = "git ls-remote --heads ${gitUrl}".execute()
-return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
+    def gitUrl = params.GIT_URL 
+    def gettags = sh(script: "git ls-remote --heads ${gitUrl}", returnStdout: true).trim()
+    def branches = gettags.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
+    echo "Branches: ${branches}"
                     '''
                 ]
             )
