@@ -74,6 +74,8 @@ pipeline {
                   env.ImageTag = "${BUILD_ID}-${TIMESTAMP}-${COMMITID}"
                   env.AppName =  env.JOB_NAME.split('/').last().toLowerCase()
                   sh """
+                  echo "仓库地址: ${GIT_URL}"
+                  echo "服务分支: ${BRANCH}"
                   echo "分支id: ${COMMITID}"
                   echo "构建时间: ${TIMESTAMP}"
                   echo "镜像TAG: ${ImageTag}"
