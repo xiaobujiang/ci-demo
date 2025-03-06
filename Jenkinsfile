@@ -4,7 +4,7 @@ properties([
     parameters([
       choice(
           name: 'APP',
-          choices: ['ci-demo'],
+          choices: ['ci-demo','ci-demo'],
           description: '选择应用'
       ),
         [$class: 'CascadeChoiceParameter',
