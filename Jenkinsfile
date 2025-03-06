@@ -2,7 +2,7 @@ properties([
     parameters([
         choice(
             choices: ['git@github.com:yjiangi/ci-demo.git'], 
-            description: '选择服务', 
+            description: '选择', 
             name: 'GIT_URL'
         ),
         [
