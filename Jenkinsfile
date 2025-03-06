@@ -10,7 +10,7 @@ properties([
         ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
-            description: '麻烦请先选择分支', 
+            description: '选择分支', 
             filterLength: 0, 
             filterable: false, 
             name: 'BRANCH', 
