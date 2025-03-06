@@ -1,52 +1,29 @@
-def APP = env.JOB_NAME.split('/').last().toLowerCase()
-
+def APP =  env.JOB_NAME.split('/').last().toLowerCase()
 def COMMITID = ""
 def TIMESTAMP = ""
-
 properties([
     parameters([
-        string(
-            name: 'APP',
-            defaultValue: APP,
-            description: '应用名称'
-        ),
         reactiveChoice(
-            choiceType: 'PT_SINGLE_SELECT',
-            description: '选择分支',
-            filterLength: 0,
-            filterable: false,
-            name: 'BRANCH',
-            randomName: "choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}",
+            choiceType: 'PT_SINGLE_SELECT', 
+            description: '选择分支', 
+            filterLength: 0, 
+            filterable: false, 
+            name: 'BRANCH', 
+            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
             script: groovyScript(
                 fallbackScript: [
-                    classpath: [],
-                    oldScript: '',
-                    sandbox: false,
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: false, 
                     script: 'return [""]'
-                ],
+                ], 
                 script: [
-                    classpath: [],
-                    oldScript: '',
-                    sandbox: false,
-                    script: '''
-def app = params.APP  // 通过 Jenkins 参数获取 APP
-
-def giturl = "git@github.com:yjiangi/${app}.git"
-
-println "Fetching branches from: ${giturl}"
-
-def process = "git ls-remote --heads ${giturl}".execute()
-process.waitFor()
-
-if (process.exitValue() != 0) {
-    println "Git command failed: ${process.err.text}"
-    return ["获取分支失败"]
-}
-
-println "Git output: ${process.text}"  // Debug 输出
-return process.text.readLines()
-       .collect { it.split()[1].replaceAll('refs/heads/', '') }
-       .unique()
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: false, 
+                    script: '''                      
+def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
+return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
             )
