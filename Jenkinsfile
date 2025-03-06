@@ -3,11 +3,6 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
-        choice(
-            choices: ['git@github.com:yjiangi/ci-demo.git'], 
-            description: '选择服务', 
-            name: 'GIT_URL'
-        ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
@@ -27,8 +22,9 @@ properties([
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
-                    script: '''                   
-def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
+                    script: ''' 
+GIT_URL = "git@github.com:yjiangi/"+"+APP+".git"                   
+def getTags = "git ls-remote --heads ${GIT_URL}".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
