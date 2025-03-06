@@ -4,35 +4,35 @@ properties([
     parameters([
       choice(
           name: 'APP',
-          choices: ['ci-demo','ci-demo'],
+          choices: ['ci-demo', 'ci-demo'],
           description: '选择应用'
       ),
-        [$class: 'CascadeChoiceParameter',
-            choiceType: 'PT_SINGLE_SELECT', 
-            description: '选择分支4', 
-            filterLength: 0, 
-            filterable: false, 
-            name: 'BRANCH', 
-            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'APP', 
-            script: groovyScript(
-                fallbackScript: [
-                    classpath: [], 
-                    oldScript: '', 
-                    sandbox: false, 
-                    script: 'return [""]'
-                ], 
-                script: [
-                    classpath: [], 
-                    oldScript: '', 
-                    sandbox: false, 
-                    script:                     
-'''def giturl = "https://github.com/yjiangi/"+ APP + ".git"                
+      [$class: 'CascadeChoiceParameter',
+          choiceType: 'PT_SINGLE_SELECT', 
+          description: '选择分支', 
+          filterLength: 0, 
+          filterable: false, 
+          name: 'BRANCH', 
+          randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
+          referencedParameters: 'APP', 
+          script: groovyScript(
+              fallbackScript: [
+                  classpath: [], 
+                  oldScript: '', 
+                  sandbox: false, 
+                  script: 'return [""]'
+              ], 
+              script: [
+                  classpath: [], 
+                  oldScript: '', 
+                  sandbox: false, 
+                  script: 
+'''def giturl = "https://github.com/yjiangi/" + APP + ".git"                
 def getTags = ("git ls-remote --heads ${giturl}").execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()'''
-                ]
-            )
-        ]
+              ]
+          )
+      ]
     ])
 ])
 
