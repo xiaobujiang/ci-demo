@@ -18,13 +18,13 @@ properties([
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: false, 
+                    sandbox: true, 
                     script: ''
                 ],
                 script: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: false, 
+                    sandbox: true, 
                     script: '''
                         // 获取 GIT_URL 参数
                         def giturl = params.GIT_URL  
