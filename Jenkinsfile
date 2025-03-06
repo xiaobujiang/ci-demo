@@ -5,36 +5,36 @@ properties([
             description: '选择服务', 
             name: 'GIT_URL'
         ),
-        reactiveChoice(
+        [
+            $class: 'CascadeChoiceParameter', 
             choiceType: 'PT_SINGLE_SELECT', 
-            description: '选择分支', 
             filterLength: 0, 
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
             referencedParameters: 'GIT_URL', 
-            script: groovyScript(
+            script: [
+                $class: 'GroovyScript', 
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
-                    script: 'return [""]'
+                    script: ''
                 ], 
                 script: [
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
                     script: '''
-giturl= GIT_URL                    
+def giturl = GIT_URL
 def getTags = "git ls-remote --heads ${giturl}".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
-            )
-        )
+            ]
+        ]
     ])
 ])
-
 
 def COMMITID = ""
 def TIMESTAMP = ""
@@ -49,8 +49,6 @@ pipeline {
         DOCKER_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_NAMEPSACE = "gitops-demo"
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
-        GIT_URL = "${GIT_URL}"
-
     }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
