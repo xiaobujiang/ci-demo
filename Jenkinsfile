@@ -6,7 +6,7 @@ properties([
             name: 'GIT_URL'
         ),
         [
-            $class: 'CascadeChoiceParameter', 
+            $class: 'CascadeChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT', 
             filterLength: 0, 
             filterable: false, 
@@ -14,21 +14,28 @@ properties([
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
             referencedParameters: 'GIT_URL', 
             script: [
-                $class: 'GroovyScript', 
+                $class: 'GroovyScript',
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
                     script: ''
-                ], 
+                ],
                 script: [
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
                     script: '''
-def giturl = GIT_URL
-def getTags = "git ls-remote --heads ${giturl}".execute()
-return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
+                        // 获取 GIT_URL 参数
+                        def giturl = params.GIT_URL  
+                        
+                        // 执行 git 命令获取分支列表
+                        def getTags = "git ls-remote --heads ${giturl}".execute()
+
+                        // 返回分支名
+                        return getTags.text.readLines()
+                                      .collect { it.split()[1].replaceAll('refs/heads/', '') }
+                                      .unique()
                     '''
                 ]
             ]
