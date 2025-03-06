@@ -18,8 +18,9 @@ properties([
                 script: [
                     classpath: [],
                     sandbox: false,
-                    script: '''         
-def gettags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
+                    script: ''' 
+def gitUrl = params.GIT_URL                    
+def gettags = "git ls-remote --heads ".execute()
 return gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
