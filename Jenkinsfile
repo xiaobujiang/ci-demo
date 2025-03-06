@@ -1,4 +1,4 @@
-def APP =  env.JOB_NAME.split('/').last().toLowerCase()
+def APP = env.JOB_NAME.split('/').last().toLowerCase()
 def COMMITID = ""
 def TIMESTAMP = ""
 properties([
