@@ -25,8 +25,9 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script: '''
-                        def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
-                        return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
+giturl=${GIT_URL}                    
+def getTags = "git ls-remote --heads ${giturl}".execute()
+return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
             )
@@ -48,6 +49,7 @@ pipeline {
         DOCKER_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_NAMEPSACE = "gitops-demo"
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
+        GIT_URL = "${GIT_URL}"
 
     }
     options {
