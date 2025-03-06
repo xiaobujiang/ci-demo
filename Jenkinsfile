@@ -35,7 +35,7 @@ pipeline {
         kubernetes {
             label "jnlp-slave-${UUID.randomUUID().toString().substring(0, 8)}"
             yaml """
- apiVersion: v1
+apiVersion: v1
 kind: Pod
 metadata:
   labels:
