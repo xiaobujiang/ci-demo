@@ -3,6 +3,11 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
+        string(
+            name: 'APP',
+            defaultValue: APP,
+            description: '应用名称'
+        ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
