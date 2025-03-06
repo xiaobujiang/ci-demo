@@ -1,10 +1,10 @@
-appname: ci-demo
+appname: golang-demo
 
 replicaCount: 1
 
 image:
-  repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/ci-demo
-  tag: 3-202503060327-20-a4b6d92
+  repository: registry.cn-hangzhou.aliyuncs.com/gitops-demo/golang-demo
+  tag: 286-202503060335-01-805f036
   pullPolicy: IfNotPresent
 
 #imagePullSecrets:
@@ -15,7 +15,7 @@ podAnnotations:
   prometheus.io/port: "8080"
 
 podLabels:
-  app: ci-demo
+  app: golang-demo
 
 service:
   type: ClusterIP
@@ -84,5 +84,5 @@ affinity:
               - key: app
                 operator: In
                 values:
-                  - ci-demo
+                  - golang-demo
           topologyKey: "kubernetes.io/hostname"
