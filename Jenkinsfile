@@ -21,8 +21,9 @@ properties([
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
-                    script: '''                      
-def getTags = "git ls-remote --heads https://github.com/yjiangi/ci-demo.git".execute()
+                    script: '''    
+def giturl = "https://github.com/yjiangi/" + APP + ".git"                
+def getTags = "git ls-remote --heads ${giturl}".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
