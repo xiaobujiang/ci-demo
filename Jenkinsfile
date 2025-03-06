@@ -79,6 +79,7 @@ pipeline {
                   echo "镜像TAG: ${ImageTag}"
                   echo "服务名字: ${AppName}"
                   echo "服务名称: ${APP}"
+                  """
                 }   
             }
         }
