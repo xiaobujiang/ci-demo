@@ -20,13 +20,13 @@ properties([
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: true, 
+                    sandbox: false, 
                     script: 'return [""]'
                 ], 
                 script: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: true, 
+                    sandbox: false, 
                     script: '''                   
 def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
