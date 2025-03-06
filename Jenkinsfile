@@ -10,7 +10,7 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'GIT_URL', 
+            referencedParameters: 'APP', 
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -23,7 +23,7 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script: ''' 
-GIT_URL = "git@github.com:yjiangi/"+"+APP+".git"                   
+GIT_URL = "git@github.com:yjiangi/" + APP + ".git"                  
 def getTags = "git ls-remote --heads ${GIT_URL}".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
