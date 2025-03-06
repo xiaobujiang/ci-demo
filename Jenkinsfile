@@ -3,6 +3,11 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
+        choice(
+            choices: ['git@github.com:yjiangi/ci-demo.git'], 
+            description: '选择服务', 
+            name: 'GIT_URL'
+        ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
@@ -10,7 +15,7 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'APP', 
+            referencedParameters: 'GIT_URL', 
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -22,7 +27,7 @@ properties([
                     classpath: [], 
                     oldScript: '', 
                     sandbox: true, 
-                    script: '''                  
+                    script: '''                   
 def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
