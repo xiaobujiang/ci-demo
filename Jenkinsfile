@@ -22,7 +22,7 @@ properties([
                     oldScript: '', 
                     sandbox: false, 
                     script: '''                      
-def getTags = "git ls-remote --heads git@github.com:yjiangi/ci-demo.git".execute()
+def getTags = "git ls-remote --heads https://github.com/yjiangi/ci-demo.git".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
                     '''
                 ]
