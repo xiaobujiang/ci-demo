@@ -1,6 +1,7 @@
 def APP = env.JOB_NAME.split('/').last().toLowerCase()
 def COMMITID = ""
 def TIMESTAMP = ""
+
 properties([
     parameters([
         string(
@@ -10,11 +11,11 @@ properties([
         ),
         reactiveChoice(
             choiceType: 'PT_SINGLE_SELECT', 
-            description: '选择分支3', 
+            description: '选择分支', 
             filterLength: 0, 
             filterable: false, 
             name: 'BRANCH', 
-            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
+            randomName: "choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}", 
             referencedParameters: 'APP', 
             script: groovyScript(
                 fallbackScript: [
@@ -27,16 +28,31 @@ properties([
                     classpath: [], 
                     oldScript: '', 
                     sandbox: false, 
-                    script:                     
-'''def giturl = "https://github.com/yjiangi/"+ APP + ".git"                
-def getTags = ("git ls-remote --heads ${giturl}").execute()
-return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
+                    script: 
+'''def app = params.APP  
+def giturl = "https://github.com/yjiangi/${app}.git"
+
+println "debug输出啊啊啊啊: ${giturl}"  
+
+def process = "git ls-remote --heads ${giturl}".execute()
+process.waitFor()
+
+if (process.exitValue() != 0) {
+    println "Git command failed: ${process.err.text}"
+    return ["获取分支失败"]
+}
+
+println "xxxxxxxxxxxxx output: ${process.text}"  
+return process.text.readLines()
+       .collect { it.split()[1].replaceAll('refs/heads/', '') }
+       .unique()
 '''
                 ]
             )
         )
     ])
 ])
+
 pipeline {
     agent {
         kubernetes {
