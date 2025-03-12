@@ -14,25 +14,24 @@ properties([
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: true, 
+                    sandbox: flase, 
                     script: 'return [""]'
                 ], 
                 script: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: true, 
+                    sandbox: flase, 
                     script: 
 '''
-GIT_URL="https://github.com/yjiangi/ci-demo.git"				
+GIT_URL="https://github.com/yjiangi"+APP+".git"				
 if  ( ENV == "dev" ) {
-    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} dev").execute()
+    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} develop feature*").execute()
     gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
 }
 else {
     def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} demo").execute()
     gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
 }
-
 '''
                 ]
             )
