@@ -30,7 +30,7 @@ if (!appName || appName == "unknown-app") {
     return ["无法获取 APP"]
 }
 
-def giturl = "https://github.com/xxx/${appName}.git"
+def giturl = "https://github.com/yjiangi/${appName}.git"
 def getTags = "git ls-remote --heads ${giturl}".execute()
 
 return getTags.text.readLines().collect { 
