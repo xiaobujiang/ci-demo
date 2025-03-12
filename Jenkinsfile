@@ -14,13 +14,13 @@ properties([
                 fallbackScript: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: flase, 
+                    sandbox: true, 
                     script: 'return [""]'
                 ], 
                 script: [
                     classpath: [], 
                     oldScript: '', 
-                    sandbox: flase, 
+                    sandbox: true, 
                     script: 
 '''
 def giturl = "https://github.com/yjiangi/ci-demo.git"                
