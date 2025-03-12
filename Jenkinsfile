@@ -1,7 +1,11 @@
 def COMMITID = ""
 def TIMESTAMP = ""
+def COMMITID = ""
+def TIMESTAMP = ""
+
 properties([
     parameters([
+        string(name: 'APP', defaultValue: env.JOB_NAME.split('/').last().toLowerCase(), description: 'Jenkins 任务名称'),
         [$class: 'CascadeChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
@@ -9,7 +13,7 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: '',  
+            referencedParameters: 'APP',  
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -23,13 +27,13 @@ properties([
                     sandbox: true, 
                     script: 
 '''
-def jobName = binding.variables.JOB_NAME ?: "unknown-job"
-def APP = jobName.split('/').last().toLowerCase()
-if (!APP) {
+def appName = params.APP ?: "unknown-app"
+
+if (!appName || appName == "unknown-app") {
     return ["无法获取 APP"]
 }
 
-def giturl = "https://github.com/xxx/${APP}.git"
+def giturl = "https://github.com/xxx/${appName}.git"
 def getTags = "git ls-remote --heads ${giturl}".execute()
 
 return getTags.text.readLines().collect { 
