@@ -9,7 +9,7 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'APP,ENV',  
+            referencedParameters: 'APP',  
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -23,15 +23,9 @@ properties([
                     sandbox: flase, 
                     script: 
 '''
-GIT_URL="https://github.com/yjiangi"+APP+".git"				
-if  ( ENV == "dev" ) {
-    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} develop feature*").execute()
-    gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
-}
-else {
-    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} demo").execute()
-    gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
-}
+def giturl = "https://github.com/yjiangi/ci-demo.git"                
+def getTags = ("git ls-remote --heads ${giturl}").execute()
+return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()
 '''
                 ]
             )
@@ -105,18 +99,6 @@ spec:
         timestamps()
         //超时时间
         timeout(time:60, unit:'MINUTES')
-    }
-    parameters {
-        choice(
-            name: 'APP', 
-            choices: ['ci-demo'], 
-            description: '选择服务：'
-        )
-        choice(
-            name: 'ENV', 
-            choices: ['test','dev'], 
-            description: '选择环境：'
-        )     
     }    
 
     stages {          
