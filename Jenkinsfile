@@ -23,7 +23,7 @@ properties([
                     sandbox: true, 
                     script: 
 '''
-GIT_URL="https://github.com/yjiangi/"+ APP +".git"				
+GIT_URL="https://github.com/yjiangi/ci-demo.git"				
 if  ( ENV == "dev" ) {
     def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} dev").execute()
     gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
