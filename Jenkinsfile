@@ -1,8 +1,5 @@
 def COMMITID = ""
 def TIMESTAMP = ""
-def COMMITID = ""
-def TIMESTAMP = ""
-
 properties([
     parameters([
         string(name: 'APP', defaultValue: env.JOB_NAME.split('/').last().toLowerCase(), description: 'Jenkins 任务名称'),
