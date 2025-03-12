@@ -19,16 +19,16 @@ properties([
               fallbackScript: [
                   classpath: [], 
                   oldScript: '', 
-                  sandbox: false, 
+                  sandbox: true, 
                   script: 'return [""]'
               ], 
               script: [
                   classpath: [], 
                   oldScript: '', 
-                  sandbox: false, 
+                  sandbox: true, 
                   script: 
 '''def giturl = "https://github.com/yjiangi/" + APP + ".git"                
-def getTags = ("git ls-remote --heads ${giturl}").execute()
+def getTags = "git ls-remote --heads ${giturl}".execute()
 return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()'''
               ]
           )
