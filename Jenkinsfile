@@ -2,7 +2,6 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
-        string(name: 'APP', defaultValue: env.JOB_NAME.split('/').last().toLowerCase(), description: 'Jenkins 任务名称'),
         [$class: 'CascadeChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT', 
             description: '选择分支', 
@@ -10,7 +9,7 @@ properties([
             filterable: false, 
             name: 'BRANCH', 
             randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-            referencedParameters: 'APP',  
+            referencedParameters: 'APP,ENV',  
             script: groovyScript(
                 fallbackScript: [
                     classpath: [], 
@@ -24,18 +23,16 @@ properties([
                     sandbox: true, 
                     script: 
 '''
-def appName = params.APP ?: "unknown-app"
-
-if (!appName || appName == "unknown-app") {
-    return ["无法获取 APP"]
+GIT_URL="https://github.com/yjiangi/"+ APP +".git"				
+if  ( ENV == "dev" ) {
+    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} dev").execute()
+    gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
+}
+else {
+    def gettags = ("/usr/bin/git ls-remote -h ${GIT_URL} demo").execute()
+    gettags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique();
 }
 
-def giturl = "https://github.com/yjiangi/${appName}.git"
-def getTags = "git ls-remote --heads ${giturl}".execute()
-
-return getTags.text.readLines().collect { 
-    it.split()[1].replaceAll('refs/heads/', '') 
-}.unique()
 '''
                 ]
             )
@@ -110,6 +107,18 @@ spec:
         //超时时间
         timeout(time:60, unit:'MINUTES')
     }
+    parameters {
+        choice(
+            name: 'APP', 
+            choices: ['ci-demo'], 
+            description: '选择服务：'
+        )
+        choice(
+            name: 'ENV', 
+            choices: ['test','dev'], 
+            description: '选择环境：'
+        )     
+    }    
 
     stages {          
         stage('commit'){
