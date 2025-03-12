@@ -2,37 +2,43 @@ def COMMITID = ""
 def TIMESTAMP = ""
 properties([
     parameters([
-      choice(
-          name: 'APP',
-          choices: ['ci-demo', 'ci-demo'],
-          description: '选择应用'
-      ),
-      [$class: 'CascadeChoiceParameter',
-          choiceType: 'PT_SINGLE_SELECT', 
-          description: '选择分支', 
-          filterLength: 0, 
-          filterable: false, 
-          name: 'BRANCH', 
-          randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
-          referencedParameters: 'APP', 
-          script: groovyScript(
-              fallbackScript: [
-                  classpath: [], 
-                  oldScript: '', 
-                  sandbox: true, 
-                  script: 'return [""]'
-              ], 
-              script: [
-                  classpath: [], 
-                  oldScript: '', 
-                  sandbox: true, 
-                  script: 
-'''def giturl = "https://github.com/yjiangi/" + APP + ".git"                
+        [$class: 'CascadeChoiceParameter',
+            choiceType: 'PT_SINGLE_SELECT', 
+            description: '选择分支', 
+            filterLength: 0, 
+            filterable: false, 
+            name: 'BRANCH', 
+            randomName: 'choice-parameter-${UUID.randomUUID().toString().substring(0, 4)}', 
+            referencedParameters: '',  
+            script: groovyScript(
+                fallbackScript: [
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: true, 
+                    script: 'return [""]'
+                ], 
+                script: [
+                    classpath: [], 
+                    oldScript: '', 
+                    sandbox: true, 
+                    script: 
+'''
+def jobName = binding.variables.JOB_NAME ?: "unknown-job"
+def APP = jobName.split('/').last().toLowerCase()
+if (!APP) {
+    return ["无法获取 APP"]
+}
+
+def giturl = "https://github.com/xxx/${APP}.git"
 def getTags = "git ls-remote --heads ${giturl}".execute()
-return getTags.text.readLines().collect { it.split()[1].replaceAll('refs/heads/', '') }.unique()'''
-              ]
-          )
-      ]
+
+return getTags.text.readLines().collect { 
+    it.split()[1].replaceAll('refs/heads/', '') 
+}.unique()
+'''
+                ]
+            )
+        ]
     ])
 ])
 
@@ -94,7 +100,6 @@ spec:
         DOCKER_REGISTRY = "registry.cn-hangzhou.aliyuncs.com"
         REGISTRY_NAMEPSACE = "gitops-demo"
         IMAGE = "${DOCKER_REGISTRY}/${REGISTRY_NAMEPSACE}"
-        GIT_URL = "git@github.com:yjiangi/${APP}.git"
     }
     options {
         //保持构建15天 最大保持构建的30个 发布包保留15天
@@ -105,15 +110,7 @@ spec:
         timeout(time:60, unit:'MINUTES')
     }
 
-    stages {
-       stage('pull code') {
-            steps {                          
-                echo '--------------------------拉取代码-----------------------'
-                checkout([$class: 'GitSCM', branches: [[name: "${BRANCH}"]], 
-                extensions: [], userRemoteConfigs: [[credentialsId: 'github-ci', 
-                url: "${GIT_URL}"]]])
-            }
-        }           
+    stages {          
         stage('commit'){
             steps{
               script{
